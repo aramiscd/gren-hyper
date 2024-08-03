@@ -1,0 +1,83 @@
+module Hyper exposing
+    ( text
+    , element
+    , style
+    , attribute
+    , children
+    , compile
+    )
+
+import Html exposing ( Html )
+import Html.Attributes
+
+
+-- HTML-Knoten
+type Node msg
+    = TextNode String
+    | ElementNode ( Element msg )
+
+
+-- Html-Element
+type Element msg
+    = Element
+        { element : Array ( Html.Attribute msg ) -> Array ( Html msg ) -> Html msg
+        , attributes : Array ( Html.Attribute msg )
+        , children : Array ( Node msg )
+        }
+
+
+-- Erzeuge einen HTML-Textknoten aus einem String
+text : String -> Node msg
+text string =
+    TextNode string
+
+
+-- Initialisiere ein HTML-Element
+element : ( Array ( Html.Attribute msg ) -> Array ( Html msg ) -> Html msg ) -> Node msg
+element elem =
+    ElementNode
+        ( Element
+            { element = elem
+            , attributes = []
+            , children = []
+            }
+        )
+
+
+-- Lege die Kindknoten eines Elementes fest
+children : Array ( Node msg ) -> Node msg -> Node msg
+children ls node =
+    case node of
+        TextNode _ -> node
+        ElementNode ( Element args ) -> ElementNode ( Element { args | children = ls } )
+
+
+-- Füge zu einem HTML-Element ein HTML-Attribut hinzu
+attribute : Html.Attribute msg -> Node msg -> Node msg
+attribute attr node =
+    case node of
+        TextNode _ -> node
+        ElementNode ( Element args ) ->
+            ElementNode ( Element { args | attributes = Array.pushLast attr args.attributes } )
+
+
+-- Füge zu einem HTML-Element eine CSS-Direktive hinzu
+style : String -> String -> Node msg -> Node msg
+style cssProperty cssValue node =
+    case node of
+        TextNode _ -> node
+        ElementNode ( Element args ) ->
+            ElementNode
+                ( Element
+                    { args
+                        | attributes = Array.pushLast ( Html.Attributes.style cssProperty cssValue ) args.attributes 
+                    }
+                )
+
+
+-- Kompiliere ein `Element msg` nach `Html msg`
+compile : Node msg -> Html msg
+compile node =
+    case node of
+        TextNode string -> Html.text string
+        ElementNode ( Element args ) -> args.element args.attributes ( Array.map compile args.children )
