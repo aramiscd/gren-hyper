@@ -3,11 +3,16 @@
 , "name" : "aramiscd/hyper"
 , "summary" : "modifiable html elements"
 , "license" : "BSD-3-Clause"
-, "version" : "1.0.1"
-, "exposed-modules" : [ "Hyper" ]
-, "gren-version" : "0.3.0 <= v < 1.0.0"
+, "version" : "1.1.0"
+, "exposed-modules" :
+    [ "Hyper"
+    , "Hyper.Html"
+    , "Hyper.Attributes"
+    , "Hyper.Events"
+    ]
+, "gren-version" : "0.4.4 <= v < 0.5.0"
 , "dependencies" :
-    { "gren-lang/browser" : "3.2.0 <= v < 5.0.0"
-    , "gren-lang/core" : "4.0.2 <= v < 6.0.0"
+    { "gren-lang/browser" : "4.0.0 <= v < 5.0.0"
+    , "gren-lang/core" : "5.0.2 <= v < 6.0.0"
     }
 }

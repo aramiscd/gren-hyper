@@ -2,7 +2,6 @@ module Hyper exposing
     ( Node
     , text
     , element
-    , style
     , attribute
     , children
     , compile
@@ -36,21 +35,7 @@ text string =
 -- Initialisiere ein HTML-Element
 element : ( Array ( Html.Attribute msg ) -> Array ( Html msg ) -> Html msg ) -> Node msg
 element elem =
-    ElementNode
-        ( Element
-            { element = elem
-            , attributes = []
-            , children = []
-            }
-        )
-
-
--- Lege die Kindknoten eines Elementes fest
-children : Array ( Node msg ) -> Node msg -> Node msg
-children ls node =
-    case node of
-        TextNode _ -> node
-        ElementNode ( Element args ) -> ElementNode ( Element { args | children = ls } )
+    ElementNode ( Element { element = elem , attributes = [] , children = [] } )
 
 
 -- Füge zu einem HTML-Element ein HTML-Attribut hinzu
@@ -62,18 +47,12 @@ attribute attr node =
             ElementNode ( Element { args | attributes = Array.pushLast attr args.attributes } )
 
 
--- Füge zu einem HTML-Element eine CSS-Direktive hinzu
-style : String -> String -> Node msg -> Node msg
-style cssProperty cssValue node =
+-- Lege die Kindknoten eines Elementes fest
+children : Array ( Node msg ) -> Node msg -> Node msg
+children ls node =
     case node of
         TextNode _ -> node
-        ElementNode ( Element args ) ->
-            ElementNode
-                ( Element
-                    { args
-                        | attributes = Array.pushLast ( Html.Attributes.style cssProperty cssValue ) args.attributes 
-                    }
-                )
+        ElementNode ( Element args ) -> ElementNode ( Element { args | children = ls } )
 
 
 -- Kompiliere ein `Element msg` nach `Html msg`
