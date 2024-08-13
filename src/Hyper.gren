@@ -9,10 +9,10 @@ module Hyper exposing
     , ins , del , small , cite , dfn , abbr , time , var , samp , kbd , s , q , mark , ruby , rt , rp , bdi , bdo
     , wbr , details , summary , menuitem , menu
 
-    , style , id , title , hidden , type_ , value , checked , placeholder , selected , accept , acceptCharset
-    , action , autocomplete , autofocus , disabled , enctype , list , maxlength , minlength , method , multiple
-    , name , novalidate , pattern , readonly , required , size , for , form_ , max , min , step , cols , rows
-    , wrap , href , target , download , hreflang , media , ping , rel , ismap , usemap , shape , coords , src
+    , style , class , classList , id , title , hidden , type_ , value , checked , placeholder , selected , accept
+    , acceptCharset , action , autocomplete , autofocus , disabled , enctype , list , maxlength , minlength , method
+    , multiple , name , novalidate , pattern , readonly , required , size , for , form_ , max , min , step , cols
+    , rows , wrap , href , target , download , hreflang , media , ping , rel , ismap , usemap , shape , coords , src
     , height , width , alt , autoplay , controls , loop , preload , poster , default , kind , srclang , sandbox
     , srcdoc , reversed , start , align , colspan , rowspan , headers , scope , accesskey , contenteditable
     , contextmenu , dir , draggable , dropzone , itemprop , lang , spellcheck , tabindex , cite_ , datetime
@@ -469,6 +469,14 @@ menu = element Html.menu
 
 style : String -> String -> Node msg -> Node msg
 style cssProperty cssValue = Html.Attributes.style cssProperty cssValue |> attribute
+
+
+class : String -> Node msg -> Node msg
+class = Html.Attributes.class >> attribute
+
+
+classList : Array { class : String , enabled : Bool } -> Node msg -> Node msg
+classList = Html.Attributes.classList >> attribute
 
 
 id : String -> Node msg -> Node msg
