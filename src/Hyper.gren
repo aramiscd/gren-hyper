@@ -55,12 +55,18 @@ element elem =
 
 
 -- Füge zu einem HTML-Element ein HTML-Attribut hinzu
-attribute : Html.Attribute msg -> Node msg -> Node msg
-attribute attr node =
+attribute : String -> String -> Node msg -> Node msg
+attribute attrName attrValue node =
     case node of
         TextNode _ -> node
         ElementNode ( Element args ) ->
-            ElementNode ( Element { args | attributes = Array.pushLast attr args.attributes } )
+            { args
+                | attributes =
+                    args.attributes
+                        |> Array.pushLast ( Html.Attributes.attribute attrName attrValue )
+            }
+                |> Element
+                |> ElementNode
 
 
 -- Lege die Kindknoten eines Elementes fest
@@ -468,335 +474,335 @@ menu = element Html.menu
 
 
 style : String -> String -> Node msg -> Node msg
-style cssProperty cssValue = Html.Attributes.style cssProperty cssValue |> attribute
+style cssProperty cssValue = Html.Attributes.style cssProperty cssValue |> fromHtmlAttribute
 
 
 class : String -> Node msg -> Node msg
-class = Html.Attributes.class >> attribute
+class = Html.Attributes.class >> fromHtmlAttribute
 
 
 classList : Array { class : String , enabled : Bool } -> Node msg -> Node msg
-classList = Html.Attributes.classList >> attribute
+classList = Html.Attributes.classList >> fromHtmlAttribute
 
 
 id : String -> Node msg -> Node msg
-id = Html.Attributes.id >> attribute
+id = Html.Attributes.id >> fromHtmlAttribute
 
 
 title : String -> Node msg -> Node msg
-title = Html.Attributes.title >> attribute
+title = Html.Attributes.title >> fromHtmlAttribute
 
 
 hidden : Bool -> Node msg -> Node msg
-hidden = Html.Attributes.hidden >> attribute
+hidden = Html.Attributes.hidden >> fromHtmlAttribute
 
 
 type_ : String -> Node msg -> Node msg
-type_ = Html.Attributes.type_ >> attribute
+type_ = Html.Attributes.type_ >> fromHtmlAttribute
 
 
 value : String -> Node msg -> Node msg
-value = Html.Attributes.value >> attribute
+value = Html.Attributes.value >> fromHtmlAttribute
 
 
 checked : Bool -> Node msg -> Node msg
-checked = Html.Attributes.checked >> attribute
+checked = Html.Attributes.checked >> fromHtmlAttribute
 
 
 placeholder : String -> Node msg -> Node msg
-placeholder = Html.Attributes.placeholder >> attribute
+placeholder = Html.Attributes.placeholder >> fromHtmlAttribute
 
 
 selected : Bool -> Node msg -> Node msg
-selected = Html.Attributes.selected >> attribute
+selected = Html.Attributes.selected >> fromHtmlAttribute
 
 
 accept : String -> Node msg -> Node msg
-accept = Html.Attributes.accept >> attribute
+accept = Html.Attributes.accept >> fromHtmlAttribute
 
 
 acceptCharset : String -> Node msg -> Node msg
-acceptCharset = Html.Attributes.acceptCharset >> attribute
+acceptCharset = Html.Attributes.acceptCharset >> fromHtmlAttribute
 
 
 action : String -> Node msg -> Node msg
-action = Html.Attributes.action >> attribute
+action = Html.Attributes.action >> fromHtmlAttribute
 
 
 autocomplete : Bool -> Node msg -> Node msg
-autocomplete = Html.Attributes.autocomplete >> attribute
+autocomplete = Html.Attributes.autocomplete >> fromHtmlAttribute
 
 
 autofocus : Bool -> Node msg -> Node msg
-autofocus = Html.Attributes.autofocus >> attribute
+autofocus = Html.Attributes.autofocus >> fromHtmlAttribute
 
 
 disabled : Bool -> Node msg -> Node msg
-disabled = Html.Attributes.disabled >> attribute
+disabled = Html.Attributes.disabled >> fromHtmlAttribute
 
 
 enctype : String -> Node msg -> Node msg
-enctype = Html.Attributes.enctype >> attribute
+enctype = Html.Attributes.enctype >> fromHtmlAttribute
 
 
 list : String -> Node msg -> Node msg
-list = Html.Attributes.list >> attribute
+list = Html.Attributes.list >> fromHtmlAttribute
 
 
 minlength : Int -> Node msg -> Node msg
-minlength = Html.Attributes.minlength >> attribute
+minlength = Html.Attributes.minlength >> fromHtmlAttribute
 
 
 maxlength : Int -> Node msg -> Node msg
-maxlength = Html.Attributes.maxlength >> attribute
+maxlength = Html.Attributes.maxlength >> fromHtmlAttribute
 
 
 method : String -> Node msg -> Node msg
-method = Html.Attributes.method >> attribute
+method = Html.Attributes.method >> fromHtmlAttribute
 
 
 multiple : Bool -> Node msg -> Node msg
-multiple = Html.Attributes.multiple >> attribute
+multiple = Html.Attributes.multiple >> fromHtmlAttribute
 
 
 name : String -> Node msg -> Node msg
-name = Html.Attributes.name >> attribute
+name = Html.Attributes.name >> fromHtmlAttribute
 
 
 novalidate : Bool -> Node msg -> Node msg
-novalidate = Html.Attributes.novalidate >> attribute
+novalidate = Html.Attributes.novalidate >> fromHtmlAttribute
 
 
 pattern : String -> Node msg -> Node msg
-pattern = Html.Attributes.pattern >> attribute
+pattern = Html.Attributes.pattern >> fromHtmlAttribute
 
 
 readonly : Bool -> Node msg -> Node msg
-readonly = Html.Attributes.readonly >> attribute
+readonly = Html.Attributes.readonly >> fromHtmlAttribute
 
 
 required : Bool -> Node msg -> Node msg
-required = Html.Attributes.required >> attribute
+required = Html.Attributes.required >> fromHtmlAttribute
 
 
 size : Int -> Node msg -> Node msg
-size = Html.Attributes.size >> attribute
+size = Html.Attributes.size >> fromHtmlAttribute
 
 
 for : String -> Node msg -> Node msg
-for = Html.Attributes.for >> attribute
+for = Html.Attributes.for >> fromHtmlAttribute
 
 
 form_ : String -> Node msg -> Node msg
-form_ = Html.Attributes.form >> attribute
+form_ = Html.Attributes.form >> fromHtmlAttribute
 
 
 max : String -> Node msg -> Node msg
-max = Html.Attributes.max >> attribute
+max = Html.Attributes.max >> fromHtmlAttribute
 
 
 min : String -> Node msg -> Node msg
-min = Html.Attributes.min >> attribute
+min = Html.Attributes.min >> fromHtmlAttribute
 
 
 step : String -> Node msg -> Node msg
-step = Html.Attributes.step >> attribute
+step = Html.Attributes.step >> fromHtmlAttribute
 
 
 cols : Int -> Node msg -> Node msg
-cols = Html.Attributes.cols >> attribute
+cols = Html.Attributes.cols >> fromHtmlAttribute
 
 
 rows : Int -> Node msg -> Node msg
-rows = Html.Attributes.rows >> attribute
+rows = Html.Attributes.rows >> fromHtmlAttribute
 
 
 wrap : String -> Node msg -> Node msg
-wrap = Html.Attributes.wrap >> attribute
+wrap = Html.Attributes.wrap >> fromHtmlAttribute
 
 
 href : String -> Node msg -> Node msg
-href = Html.Attributes.href >> attribute
+href = Html.Attributes.href >> fromHtmlAttribute
 
 
 target : String -> Node msg -> Node msg
-target = Html.Attributes.target >> attribute
+target = Html.Attributes.target >> fromHtmlAttribute
 
 
 download : String -> Node msg -> Node msg
-download = Html.Attributes.download >> attribute
+download = Html.Attributes.download >> fromHtmlAttribute
 
 
 hreflang : String -> Node msg -> Node msg
-hreflang = Html.Attributes.hreflang >> attribute
+hreflang = Html.Attributes.hreflang >> fromHtmlAttribute
 
 
 media : String -> Node msg -> Node msg
-media = Html.Attributes.media >> attribute
+media = Html.Attributes.media >> fromHtmlAttribute
 
 
 ping : String -> Node msg -> Node msg
-ping = Html.Attributes.ping >> attribute
+ping = Html.Attributes.ping >> fromHtmlAttribute
 
 
 rel : String -> Node msg -> Node msg
-rel = Html.Attributes.rel >> attribute
+rel = Html.Attributes.rel >> fromHtmlAttribute
 
 
 ismap : Bool -> Node msg -> Node msg
-ismap = Html.Attributes.ismap >> attribute
+ismap = Html.Attributes.ismap >> fromHtmlAttribute
 
 
 usemap : String -> Node msg -> Node msg
-usemap = Html.Attributes.usemap >> attribute
+usemap = Html.Attributes.usemap >> fromHtmlAttribute
 
 
 shape : String -> Node msg -> Node msg
-shape = Html.Attributes.shape >> attribute
+shape = Html.Attributes.shape >> fromHtmlAttribute
 
 
 coords : String -> Node msg -> Node msg
-coords = Html.Attributes.coords >> attribute
+coords = Html.Attributes.coords >> fromHtmlAttribute
 
 
 src : String -> Node msg -> Node msg
-src = Html.Attributes.src >> attribute
+src = Html.Attributes.src >> fromHtmlAttribute
 
 
 height : Int -> Node msg -> Node msg
-height = Html.Attributes.height >> attribute
+height = Html.Attributes.height >> fromHtmlAttribute
 
 
 width : Int -> Node msg -> Node msg
-width = Html.Attributes.width >> attribute
+width = Html.Attributes.width >> fromHtmlAttribute
 
 
 alt : String -> Node msg -> Node msg
-alt = Html.Attributes.alt >> attribute
+alt = Html.Attributes.alt >> fromHtmlAttribute
 
 
 autoplay : Bool -> Node msg -> Node msg
-autoplay = Html.Attributes.autoplay >> attribute
+autoplay = Html.Attributes.autoplay >> fromHtmlAttribute
 
 
 controls : Bool -> Node msg -> Node msg
-controls = Html.Attributes.controls >> attribute
+controls = Html.Attributes.controls >> fromHtmlAttribute
 
 
 loop : Bool -> Node msg -> Node msg
-loop = Html.Attributes.loop >> attribute
+loop = Html.Attributes.loop >> fromHtmlAttribute
 
 
 preload : String -> Node msg -> Node msg
-preload = Html.Attributes.preload >> attribute
+preload = Html.Attributes.preload >> fromHtmlAttribute
 
 
 poster : String -> Node msg -> Node msg
-poster = Html.Attributes.poster >> attribute
+poster = Html.Attributes.poster >> fromHtmlAttribute
 
 
 default : Bool -> Node msg -> Node msg
-default = Html.Attributes.default >> attribute
+default = Html.Attributes.default >> fromHtmlAttribute
 
 
 kind : String -> Node msg -> Node msg
-kind = Html.Attributes.kind >> attribute
+kind = Html.Attributes.kind >> fromHtmlAttribute
 
 
 srclang : String -> Node msg -> Node msg
-srclang = Html.Attributes.srclang >> attribute
+srclang = Html.Attributes.srclang >> fromHtmlAttribute
 
 
 sandbox : String -> Node msg -> Node msg
-sandbox = Html.Attributes.sandbox >> attribute
+sandbox = Html.Attributes.sandbox >> fromHtmlAttribute
 
 
 srcdoc : String -> Node msg -> Node msg
-srcdoc = Html.Attributes.srcdoc >> attribute
+srcdoc = Html.Attributes.srcdoc >> fromHtmlAttribute
 
 
 reversed : Bool -> Node msg -> Node msg
-reversed = Html.Attributes.reversed >> attribute
+reversed = Html.Attributes.reversed >> fromHtmlAttribute
 
 
 start : Int -> Node msg -> Node msg
-start = Html.Attributes.start >> attribute
+start = Html.Attributes.start >> fromHtmlAttribute
 
 
 align : String -> Node msg -> Node msg
-align = Html.Attributes.align >> attribute
+align = Html.Attributes.align >> fromHtmlAttribute
 
 
 colspan : Int -> Node msg -> Node msg
-colspan = Html.Attributes.colspan >> attribute
+colspan = Html.Attributes.colspan >> fromHtmlAttribute
 
 
 rowspan : Int -> Node msg -> Node msg
-rowspan = Html.Attributes.rowspan >> attribute
+rowspan = Html.Attributes.rowspan >> fromHtmlAttribute
 
 
 headers : String -> Node msg -> Node msg
-headers = Html.Attributes.headers >> attribute
+headers = Html.Attributes.headers >> fromHtmlAttribute
 
 
 scope : String -> Node msg -> Node msg
-scope = Html.Attributes.scope >> attribute
+scope = Html.Attributes.scope >> fromHtmlAttribute
 
 
 accesskey : Char -> Node msg -> Node msg
-accesskey = Html.Attributes.accesskey >> attribute
+accesskey = Html.Attributes.accesskey >> fromHtmlAttribute
 
 
 contenteditable : Bool -> Node msg -> Node msg
-contenteditable = Html.Attributes.contenteditable >> attribute
+contenteditable = Html.Attributes.contenteditable >> fromHtmlAttribute
 
 
 contextmenu : String -> Node msg -> Node msg
-contextmenu = Html.Attributes.contextmenu >> attribute
+contextmenu = Html.Attributes.contextmenu >> fromHtmlAttribute
 
 
 dir : String -> Node msg -> Node msg
-dir = Html.Attributes.dir >> attribute
+dir = Html.Attributes.dir >> fromHtmlAttribute
 
 
 draggable : String -> Node msg -> Node msg
-draggable = Html.Attributes.draggable >> attribute
+draggable = Html.Attributes.draggable >> fromHtmlAttribute
 
 
 dropzone : String -> Node msg -> Node msg
-dropzone = Html.Attributes.dropzone >> attribute
+dropzone = Html.Attributes.dropzone >> fromHtmlAttribute
 
 
 itemprop : String -> Node msg -> Node msg
-itemprop = Html.Attributes.itemprop >> attribute
+itemprop = Html.Attributes.itemprop >> fromHtmlAttribute
 
 
 lang : String -> Node msg -> Node msg
-lang = Html.Attributes.lang >> attribute
+lang = Html.Attributes.lang >> fromHtmlAttribute
 
 
 spellcheck : Bool -> Node msg -> Node msg
-spellcheck = Html.Attributes.spellcheck >> attribute
+spellcheck = Html.Attributes.spellcheck >> fromHtmlAttribute
 
 
 tabindex : Int -> Node msg -> Node msg
-tabindex = Html.Attributes.tabindex >> attribute
+tabindex = Html.Attributes.tabindex >> fromHtmlAttribute
 
 
 cite_ : String -> Node msg -> Node msg
-cite_ = Html.Attributes.cite >> attribute
+cite_ = Html.Attributes.cite >> fromHtmlAttribute
 
 
 datetime : String -> Node msg -> Node msg
-datetime = Html.Attributes.datetime >> attribute
+datetime = Html.Attributes.datetime >> fromHtmlAttribute
 
 
 pubdate : String -> Node msg -> Node msg
-pubdate = Html.Attributes.pubdate >> attribute
+pubdate = Html.Attributes.pubdate >> fromHtmlAttribute
 
 
 manifest : String -> Node msg -> Node msg
-manifest = Html.Attributes.manifest >> attribute
+manifest = Html.Attributes.manifest >> fromHtmlAttribute
 
 
 
@@ -807,35 +813,35 @@ manifest = Html.Attributes.manifest >> attribute
 
 
 onClick : msg -> Node msg -> Node msg
-onClick = Html.Events.onClick >> attribute
+onClick = Html.Events.onClick >> fromHtmlAttribute
 
 
 onDoubleClick : msg -> Node msg -> Node msg
-onDoubleClick = Html.Events.onDoubleClick >> attribute
+onDoubleClick = Html.Events.onDoubleClick >> fromHtmlAttribute
 
 
 onMouseDown : msg -> Node msg -> Node msg
-onMouseDown = Html.Events.onMouseDown >> attribute
+onMouseDown = Html.Events.onMouseDown >> fromHtmlAttribute
 
 
 onMouseUp : msg -> Node msg -> Node msg
-onMouseUp = Html.Events.onMouseUp >> attribute
+onMouseUp = Html.Events.onMouseUp >> fromHtmlAttribute
 
 
 onMouseEnter : msg -> Node msg -> Node msg
-onMouseEnter = Html.Events.onMouseEnter >> attribute
+onMouseEnter = Html.Events.onMouseEnter >> fromHtmlAttribute
 
 
 onMouseLeave : msg -> Node msg -> Node msg
-onMouseLeave = Html.Events.onMouseLeave >> attribute
+onMouseLeave = Html.Events.onMouseLeave >> fromHtmlAttribute
 
 
 onMouseOver : msg -> Node msg -> Node msg
-onMouseOver = Html.Events.onMouseOver >> attribute
+onMouseOver = Html.Events.onMouseOver >> fromHtmlAttribute
 
 
 onMouseOut : msg -> Node msg -> Node msg
-onMouseOut = Html.Events.onMouseOut >> attribute
+onMouseOut = Html.Events.onMouseOut >> fromHtmlAttribute
 
 
 
@@ -843,15 +849,15 @@ onMouseOut = Html.Events.onMouseOut >> attribute
 
 
 onInput : ( String -> msg ) -> Node msg -> Node msg
-onInput = Html.Events.onInput >> attribute
+onInput = Html.Events.onInput >> fromHtmlAttribute
 
 
 onCheck : ( Bool -> msg ) -> Node msg -> Node msg
-onCheck = Html.Events.onCheck >> attribute
+onCheck = Html.Events.onCheck >> fromHtmlAttribute
 
 
 onSubmit : msg -> Node msg -> Node msg
-onSubmit = Html.Events.onSubmit >> attribute
+onSubmit = Html.Events.onSubmit >> fromHtmlAttribute
 
 
 
@@ -859,8 +865,20 @@ onSubmit = Html.Events.onSubmit >> attribute
 
 
 onBlur : msg -> Node msg -> Node msg
-onBlur = Html.Events.onBlur >> attribute
+onBlur = Html.Events.onBlur >> fromHtmlAttribute
 
 
 onFocus : msg -> Node msg -> Node msg
-onFocus = Html.Events.onFocus >> attribute
+onFocus = Html.Events.onFocus >> fromHtmlAttribute
+
+
+
+-- Intern
+
+
+fromHtmlAttribute : Html.Attribute msg -> Node msg -> Node msg
+fromHtmlAttribute attr node =
+    case node of
+        TextNode _ -> node
+        ElementNode ( Element args ) ->
+            ElementNode ( Element { args | attributes = Array.pushLast attr args.attributes } )
