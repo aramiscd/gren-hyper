@@ -1,5 +1,5 @@
 module Hyper exposing
-    ( Node , text , element , attribute , children , compile
+    ( Node , text , element , attribute , children , inline , compile
 
     , h1 , h2 , h3 , h4 , h5 , h6 , div , p , hr , pre , blockquote , span , a , code , em , strong , i , b
     , u , sub , sup , br , ol , ul , li , dl , dt , dd , img , iframe , canvas , math , form , input , textarea
@@ -31,6 +31,7 @@ import Html.Events
 type Node msg
     = TextNode String
     | ElementNode ( Element msg )
+    | InlineHtmlNode ( Html msg )
 
 
 -- HTML-Element
@@ -59,6 +60,7 @@ attribute : String -> String -> Node msg -> Node msg
 attribute attrName attrValue node =
     case node of
         TextNode _ -> node
+        InlineHtmlNode _ -> node
         ElementNode ( Element args ) ->
             { args
                 | attributes =
@@ -74,13 +76,21 @@ children : Array ( Node msg ) -> Node msg -> Node msg
 children ls node =
     case node of
         TextNode _ -> node
+        InlineHtmlNode _ -> node
         ElementNode ( Element args ) -> ElementNode ( Element { args | children = ls } )
+
+
+-- Binde fertigres Gren-Html ein
+inline : Html msg -> Node msg
+inline html =
+    InlineHtmlNode html
 
 
 -- Kompiliere ein `Element msg` nach `Html msg`
 compile : Node msg -> Html msg
 compile node =
     case node of
+        InlineHtmlNode html -> html
         TextNode string -> Html.text string
         ElementNode ( Element args ) -> args.element args.attributes ( Array.map compile args.children )
 
@@ -880,5 +890,6 @@ fromHtmlAttribute : Html.Attribute msg -> Node msg -> Node msg
 fromHtmlAttribute attr node =
     case node of
         TextNode _ -> node
+        InlineHtmlNode _ -> node
         ElementNode ( Element args ) ->
             ElementNode ( Element { args | attributes = Array.pushLast attr args.attributes } )
