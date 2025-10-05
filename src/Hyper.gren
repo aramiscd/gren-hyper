@@ -1,25 +1,18 @@
 module Hyper exposing
-    ( Node , text , element , attribute , children , inline , compile
-
-    , h1 , h2 , h3 , h4 , h5 , h6 , div , p , hr , pre , blockquote , span , a , code , em , strong , i , b
-    , u , sub , sup , br , ol , ul , li , dl , dt , dd , img , iframe , canvas , math , form , input , textarea
-    , button , select , option , section , nav , article , aside , header , footer , main_ , figure , figcaption
-    , table , caption , colgroup , col , tbody , thead , tfoot , tr , td , th , fieldset , legend , label
-    , datalist , optgroup , output , progress , meter , audio , video , source , track , embed , object , param
-    , ins , del , small , cite , dfn , abbr , time , var , samp , kbd , s , q , mark , ruby , rt , rp , bdi , bdo
-    , wbr , details , summary , menuitem , menu
-
-    , style , class , classList , id , title , hidden , type_ , value , checked , placeholder , selected , accept
-    , acceptCharset , action , autocomplete , autofocus , disabled , enctype , list , maxlength , minlength , method
-    , multiple , name , novalidate , pattern , readonly , required , size , for , form_ , max , min , step , cols
-    , rows , wrap , href , target , download , hreflang , media , ping , rel , ismap , usemap , shape , coords , src
-    , height , width , alt , autoplay , controls , loop , preload , poster , default , kind , srclang , sandbox
-    , srcdoc , reversed , start , align , colspan , rowspan , headers , scope , accesskey , contenteditable
-    , contextmenu , dir , draggable , dropzone , itemprop , lang , spellcheck , tabindex , cite_ , datetime
-    , pubdate , manifest
-
-    , onClick , onDoubleClick , onMouseDown , onMouseUp , onMouseEnter , onMouseLeave , onMouseOver , onMouseOut
-    , onInput , onCheck , onSubmit , onBlur , onFocus
+    ( Node, text, element, attribute, children, inline, compile, h1, h2, h3, h4, h5, h6, div, p, hr, pre, blockquote
+    , span, a, code, em, strong, i, b, u, sub, sup, br, ol, ul, li, dl, dt, dd, img, iframe, canvas, math, form, input
+    , textarea, button, select, option, section, nav, article, aside, header, footer, address, main_, figure
+    , figcaption, table, caption, colgroup, col, tbody, thead, tfoot, tr, td, th, fieldset, legend, label, datalist
+    , optgroup, output, progress, meter, audio, video, source, track, embed, object, param, ins, del, small, cite, dfn
+    , abbr, time, var, samp, kbd, s, q, mark, ruby, rt, rp, bdi, bdo, wbr, details, summary, menuitem, menu, style
+    , class, classList, id, title, hidden, type_, value, checked, placeholder, selected, accept, acceptCharset, action
+    , autocomplete, autofocus, disabled, enctype, list, maxlength, minlength, method, multiple, name, novalidate
+    , pattern, readonly, required, size, for, form_, max, min, step, cols, rows, wrap, href, target, download
+    , hreflang, media, ping, rel, ismap, usemap, shape, coords, src, height, width, alt, autoplay, controls, loop
+    , preload, poster, default, kind, srclang, sandbox, srcdoc, reversed, start, align, colspan, rowspan, headers
+    , scope, accesskey, contenteditable, contextmenu, dir, draggable, dropzone, itemprop, lang, spellcheck, tabindex
+    , cite_, datetime, pubdate, manifest, onClick, onDoubleClick, onMouseDown, onMouseUp, onMouseEnter, onMouseLeave
+    , onMouseOver, onMouseOut, onInput, onCheck, onSubmit, onBlur, onFocus
     )
 
 import Html exposing ( Html )
@@ -58,23 +51,23 @@ element elem =
 -- Füge zu einem HTML-Element ein HTML-Attribut hinzu
 attribute : String -> String -> Node msg -> Node msg
 attribute attrName attrValue node =
-    case node of
+    when node is
         TextNode _ -> node
         InlineHtmlNode _ -> node
         ElementNode ( Element args ) ->
             { args
                 | attributes =
                     args.attributes
-                        |> Array.pushLast ( Html.Attributes.attribute attrName attrValue )
+                    |> Array.pushLast ( Html.Attributes.attribute attrName attrValue )
             }
-                |> Element
-                |> ElementNode
+            |> Element
+            |> ElementNode
 
 
 -- Lege die Kindknoten eines Elementes fest
 children : Array ( Node msg ) -> Node msg -> Node msg
 children ls node =
-    case node of
+    when node is
         TextNode _ -> node
         InlineHtmlNode _ -> node
         ElementNode ( Element args ) -> ElementNode ( Element { args | children = ls } )
@@ -89,7 +82,7 @@ inline html =
 -- Kompiliere ein `Element msg` nach `Html msg`
 compile : Node msg -> Html msg
 compile node =
-    case node of
+    when node is
         InlineHtmlNode html -> html
         TextNode string -> Html.text string
         ElementNode ( Element args ) -> args.element args.attributes ( Array.map compile args.children )
@@ -273,6 +266,10 @@ header = element Html.header
 
 footer : Node msg
 footer = element Html.footer
+
+
+address : Node msg
+address = element Html.address
 
 
 main_ : Node msg
@@ -888,7 +885,7 @@ onFocus = Html.Events.onFocus >> fromHtmlAttribute
 
 fromHtmlAttribute : Html.Attribute msg -> Node msg -> Node msg
 fromHtmlAttribute attr node =
-    case node of
+    when node is
         TextNode _ -> node
         InlineHtmlNode _ -> node
         ElementNode ( Element args ) ->
