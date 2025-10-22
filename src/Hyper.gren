@@ -441,7 +441,7 @@ import Html.Attributes
 import Html.Events
 
 
-{-| HTML-Knoten
+{-| HTML nodes
 -}
 type Node msg
     = TextNode String
@@ -449,7 +449,7 @@ type Node msg
     | InlineHtmlNode ( Html msg )
 
 
-{-| HTML-Element
+{-| HTML elements
 -}
 type Element msg
     = Element
@@ -459,21 +459,21 @@ type Element msg
         }
 
 
-{-| Erzeuge einen HTML-Textknoten aus einem String
+{-| Create an HTML text node from a string
 -}
 text : String -> Node msg
 text string =
     TextNode string
 
 
-{-| Initialisiere ein HTML-Element
+{-| Initialize an HTML element
 -}
 element : ( Array ( Html.Attribute msg ) -> Array ( Html msg ) -> Html msg ) -> Node msg
 element elem =
     ElementNode ( Element { element = elem , attributes = [] , children = [] } )
 
 
-{-| Füge zu einem HTML-Element ein HTML-Attribut hinzu
+{-| Add an HTML attribute to an HTML element
 -}
 attribute : String -> String -> Node msg -> Node msg
 attribute attrName attrValue node =
@@ -490,7 +490,7 @@ attribute attrName attrValue node =
             |> ElementNode
 
 
-{-| Lege die Kindknoten eines Elementes fest
+{-| Set the children of an HTML element
 -}
 children : Array ( Node msg ) -> Node msg -> Node msg
 children ls node =
@@ -500,14 +500,14 @@ children ls node =
         ElementNode ( Element args ) -> ElementNode ( Element { args | children = ls } )
 
 
-{-| Binde fertigres Gren-Html ein
+{-| Inline an `Html msg` value
 -}
 inline : Html msg -> Node msg
 inline html =
     InlineHtmlNode html
 
 
-{-| Kompiliere ein `Element msg` nach `Html msg`
+{-| Compile `Element msg` to `Html msg`
 -}
 compile : Node msg -> Html msg
 compile node =
@@ -1670,7 +1670,7 @@ onFocus = Html.Events.onFocus >> fromHtmlAttribute
 
 
 
--- Intern
+-- Internal
 
 
 fromHtmlAttribute : Html.Attribute msg -> Node msg -> Node msg
