@@ -1,9 +1,9 @@
 { "type" : "package"
 , "platform" : "browser"
-, "name" : "aramiscd/hyper"
+, "name" : "aramiscd/gren-hyper"
 , "summary" : "modifiable html elements"
 , "license" : "BSD-3-Clause"
-, "version" : "1.6.0"
+, "version" : "1.6.1"
 , "exposed-modules" :
     [ "Hyper"
     ]
