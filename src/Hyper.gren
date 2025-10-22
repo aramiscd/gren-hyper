@@ -15,19 +15,442 @@ module Hyper exposing
     , onMouseOver, onMouseOut, onInput, onCheck, onSubmit, onBlur, onFocus
     )
 
+{-| # gren-hyper
+
+## Data types and tools
+
+@docs Node
+
+@docs text
+
+@docs element
+
+@docs attribute
+
+@docs children
+
+@docs inline
+
+@docs compile
+
+
+## HTML elements
+
+@docs h1
+
+@docs h2
+
+@docs h3
+
+@docs h4
+
+@docs h5
+
+@docs h6
+
+@docs div
+
+@docs p
+
+@docs hr
+
+@docs pre
+
+@docs blockquote
+
+@docs span
+
+@docs a
+
+@docs code
+
+@docs em
+
+@docs strong
+
+@docs i
+
+@docs b
+
+@docs u
+
+@docs sub
+
+@docs sup
+
+@docs br
+
+@docs ol
+
+@docs ul
+
+@docs li
+
+@docs dl
+
+@docs dt
+
+@docs dd
+
+@docs img
+
+@docs iframe
+
+@docs canvas
+
+@docs math
+
+@docs form
+
+@docs input
+
+@docs textarea
+
+@docs button
+
+@docs select
+
+@docs option
+
+@docs section
+
+@docs nav
+
+@docs article
+
+@docs aside
+
+@docs header
+
+@docs footer
+
+@docs address
+
+@docs main_
+
+@docs figure
+
+@docs figcaption
+
+@docs table
+
+@docs caption
+
+@docs colgroup
+
+@docs col
+
+@docs tbody
+
+@docs thead
+
+@docs tfoot
+
+@docs tr
+
+@docs td
+
+@docs th
+
+@docs fieldset
+
+@docs legend
+
+@docs label
+
+@docs datalist
+
+@docs optgroup
+
+@docs output
+
+@docs progress
+
+@docs meter
+
+@docs audio
+
+@docs video
+
+@docs source
+
+@docs track
+
+@docs embed
+
+@docs object
+
+@docs param
+
+@docs ins
+
+@docs del
+
+@docs small
+
+@docs cite
+
+@docs dfn
+
+@docs abbr
+
+@docs time
+
+@docs var
+
+@docs samp
+
+@docs kbd
+
+@docs s
+
+@docs q
+
+@docs mark
+
+@docs ruby
+
+@docs rt
+
+@docs rp
+
+@docs bdi
+
+@docs bdo
+
+@docs wbr
+
+@docs details
+
+@docs summary
+
+@docs menuitem
+
+@docs menu
+
+
+## HTML attributes
+
+@docs style
+
+@docs class
+
+@docs classList
+
+@docs id
+
+@docs title
+
+@docs hidden
+
+@docs type_
+
+@docs value
+
+@docs checked
+
+@docs placeholder
+
+@docs selected
+
+@docs accept
+
+@docs acceptCharset
+
+@docs action
+
+@docs autocomplete
+
+@docs autofocus
+
+@docs disabled
+
+@docs enctype
+
+@docs list
+
+@docs minlength
+
+@docs maxlength
+
+@docs method
+
+@docs multiple
+
+@docs name
+
+@docs novalidate
+
+@docs pattern
+
+@docs readonly
+
+@docs required
+
+@docs size
+
+@docs for
+
+@docs form_
+
+@docs max
+
+@docs min
+
+@docs step
+
+@docs cols
+
+@docs rows
+
+@docs wrap
+
+@docs href
+
+@docs target
+
+@docs download
+
+@docs hreflang
+
+@docs media
+
+@docs ping
+
+@docs rel
+
+@docs ismap
+
+@docs usemap
+
+@docs shape
+
+@docs coords
+
+@docs src
+
+@docs height
+
+@docs width
+
+@docs alt
+
+@docs autoplay
+
+@docs controls
+
+@docs loop
+
+@docs preload
+
+@docs poster
+
+@docs default
+
+@docs kind
+
+@docs srclang
+
+@docs sandbox
+
+@docs srcdoc
+
+@docs reversed
+
+@docs start
+
+@docs align
+
+@docs colspan
+
+@docs rowspan
+
+@docs headers
+
+@docs scope
+
+@docs accesskey
+
+@docs contenteditable
+
+@docs contextmenu
+
+@docs dir
+
+@docs draggable
+
+@docs dropzone
+
+@docs itemprop
+
+@docs lang
+
+@docs spellcheck
+
+@docs tabindex
+
+@docs cite_
+
+@docs datetime
+
+@docs pubdate
+
+@docs manifest
+
+
+## HTML events
+
+### Mouse
+
+@docs onClick
+
+@docs onDoubleClick
+
+@docs onMouseDown
+
+@docs onMouseUp
+
+@docs onMouseEnter
+
+@docs onMouseLeave
+
+@docs onMouseOver
+
+@docs onMouseOut
+
+
+### Forms
+
+@docs onInput
+
+@docs onCheck
+
+@docs onSubmit
+
+
+### Focus
+
+@docs onBlur
+
+@docs onFocus
+
+-}
+
 import Html exposing ( Html )
 import Html.Attributes
 import Html.Events
 
 
--- HTML-Knoten
+{-| HTML-Knoten
+-}
 type Node msg
     = TextNode String
     | ElementNode ( Element msg )
     | InlineHtmlNode ( Html msg )
 
 
--- HTML-Element
+{-| HTML-Element
+-}
 type Element msg
     = Element
         { element : Array ( Html.Attribute msg ) -> Array ( Html msg ) -> Html msg
@@ -36,19 +459,22 @@ type Element msg
         }
 
 
--- Erzeuge einen HTML-Textknoten aus einem String
+{-| Erzeuge einen HTML-Textknoten aus einem String
+-}
 text : String -> Node msg
 text string =
     TextNode string
 
 
--- Initialisiere ein HTML-Element
+{-| Initialisiere ein HTML-Element
+-}
 element : ( Array ( Html.Attribute msg ) -> Array ( Html msg ) -> Html msg ) -> Node msg
 element elem =
     ElementNode ( Element { element = elem , attributes = [] , children = [] } )
 
 
--- Füge zu einem HTML-Element ein HTML-Attribut hinzu
+{-| Füge zu einem HTML-Element ein HTML-Attribut hinzu
+-}
 attribute : String -> String -> Node msg -> Node msg
 attribute attrName attrValue node =
     when node is
@@ -64,7 +490,8 @@ attribute attrName attrValue node =
             |> ElementNode
 
 
--- Lege die Kindknoten eines Elementes fest
+{-| Lege die Kindknoten eines Elementes fest
+-}
 children : Array ( Node msg ) -> Node msg -> Node msg
 children ls node =
     when node is
@@ -73,13 +500,15 @@ children ls node =
         ElementNode ( Element args ) -> ElementNode ( Element { args | children = ls } )
 
 
--- Binde fertigres Gren-Html ein
+{-| Binde fertigres Gren-Html ein
+-}
 inline : Html msg -> Node msg
 inline html =
     InlineHtmlNode html
 
 
--- Kompiliere ein `Element msg` nach `Html msg`
+{-| Kompiliere ein `Element msg` nach `Html msg`
+-}
 compile : Node msg -> Html msg
 compile node =
     when node is
@@ -88,793 +517,1154 @@ compile node =
         ElementNode ( Element args ) -> args.element args.attributes ( Array.map compile args.children )
 
 
-
--- HTML Elements ------------------------------------------------------------------------------------------------------
-
-
+{-| h1
+-}
 h1 : Node msg
 h1 = element Html.h1
 
 
+{-| h2
+-}
 h2 : Node msg
 h2 = element Html.h2
 
 
+{-| h3
+-}
 h3 : Node msg
 h3 = element Html.h3
 
 
+{-| h4
+-}
 h4 : Node msg
 h4 = element Html.h4
 
 
+{-| h5
+-}
 h5 : Node msg
 h5 = element Html.h5
 
 
+{-| h6
+-}
 h6 : Node msg
 h6 = element Html.h6
 
 
+{-| div
+-}
 div : Node msg
 div = element Html.div
 
 
+{-| p
+-}
 p : Node msg
 p = element Html.p
 
 
+{-| hr
+-}
 hr : Node msg
 hr = element Html.hr
 
 
+{-| pre
+-}
 pre : Node msg
 pre = element Html.pre
 
 
+{-| blockquote
+-}
 blockquote : Node msg
 blockquote = element Html.blockquote
 
 
+{-| span
+-}
 span : Node msg
 span = element Html.span
 
 
+{-| a
+-}
 a : Node msg
 a = element Html.a
 
 
+{-| code
+-}
 code : Node msg
 code = element Html.code
 
 
+{-| em
+-}
 em : Node msg
 em = element Html.em
 
 
+{-| strong
+-}
 strong : Node msg
 strong = element Html.strong
 
 
+{-| i
+-}
 i : Node msg
 i = element Html.i
 
 
+{-| b
+-}
 b : Node msg
 b = element Html.b
 
 
+{-| u
+-}
 u : Node msg
 u = element Html.u
 
 
+{-| sub
+-}
 sub : Node msg
 sub = element Html.sub
 
 
+{-| sup
+-}
 sup : Node msg
 sup = element Html.sup
 
 
+{-| br
+-}
 br : Node msg
 br = element Html.br
 
 
+{-| ol
+-}
 ol : Node msg
 ol = element Html.ol
 
 
+{-| ul
+-}
 ul : Node msg
 ul = element Html.ul
 
 
+{-| li
+-}
 li : Node msg
 li = element Html.li
 
 
+{-| dl
+-}
 dl : Node msg
 dl = element Html.dl
 
 
+{-| dt
+-}
 dt : Node msg
 dt = element Html.dt
 
 
+{-| dd
+-}
 dd : Node msg
 dd = element Html.dd
 
 
+{-| img
+-}
 img : Node msg
 img = element Html.img
 
 
+{-| iframe
+-}
 iframe : Node msg
 iframe = element Html.iframe
 
 
+{-| canvas
+-}
 canvas : Node msg
 canvas = element Html.canvas
 
 
+{-| math
+-}
 math : Node msg
 math = element Html.math
 
 
+{-| form
+-}
 form : Node msg
 form = element Html.form
 
 
+{-| input
+-}
 input : Node msg
 input = element Html.input
 
 
+{-| textarea
+-}
 textarea : Node msg
 textarea = element Html.textarea
 
 
+{-| button
+-}
 button : Node msg
 button = element Html.button
 
 
+{-| select
+-}
 select : Node msg
 select = element Html.select
 
 
+{-| option
+-}
 option : Node msg
 option = element Html.option
 
 
+{-| section
+-}
 section : Node msg
 section = element Html.section
 
 
+{-| nav
+-}
 nav : Node msg
 nav = element Html.nav
 
 
+{-| article
+-}
 article : Node msg
 article = element Html.article
 
 
+{-| aside
+-}
 aside : Node msg
 aside = element Html.aside
 
 
+{-| header
+-}
 header : Node msg
 header = element Html.header
 
 
+{-| footer
+-}
 footer : Node msg
 footer = element Html.footer
 
 
+{-| address
+-}
 address : Node msg
 address = element Html.address
 
 
+{-| main_
+-}
 main_ : Node msg
 main_ = element Html.main_
 
 
+{-| figure
+-}
 figure : Node msg
 figure = element Html.figure
 
 
+{-| figcaption
+-}
 figcaption : Node msg
 figcaption = element Html.figcaption
 
 
+{-| table
+-}
 table : Node msg
 table = element Html.table
 
 
+{-| caption
+-}
 caption : Node msg
 caption = element Html.caption
 
 
+{-| colgroup
+-}
 colgroup : Node msg
 colgroup = element Html.colgroup
 
 
+{-| col
+-}
 col : Node msg
 col = element Html.col
 
 
+{-| tbody
+-}
 tbody : Node msg
 tbody = element Html.tbody
 
 
+{-| thead
+-}
 thead : Node msg
 thead = element Html.thead
 
 
+{-| tfoot
+-}
 tfoot : Node msg
 tfoot = element Html.tfoot
 
 
+{-| tr
+-}
 tr : Node msg
 tr = element Html.tr
 
 
+{-| td
+-}
 td : Node msg
 td = element Html.td
 
 
+{-| th
+-}
 th : Node msg
 th = element Html.th
 
 
+{-| fieldset
+-}
 fieldset : Node msg
 fieldset = element Html.fieldset
 
 
+{-| legend
+-}
 legend : Node msg
 legend = element Html.legend
 
 
+{-| label
+-}
 label : Node msg
 label = element Html.label
 
 
+{-| datalist
+-}
 datalist : Node msg
 datalist = element Html.datalist
 
 
+{-| optgroup
+-}
 optgroup : Node msg
 optgroup = element Html.optgroup
 
 
+{-| output
+-}
 output : Node msg
 output = element Html.output
 
 
+{-| progress
+-}
 progress : Node msg
 progress = element Html.progress
 
 
+{-| meter
+-}
 meter : Node msg
 meter = element Html.meter
 
 
+{-| audio
+-}
 audio : Node msg
 audio = element Html.audio
 
 
+{-| video
+-}
 video : Node msg
 video = element Html.video
 
 
+{-| source
+-}
 source : Node msg
 source = element Html.source
 
 
+{-| track
+-}
 track : Node msg
 track = element Html.track
 
 
+{-| embed
+-}
 embed : Node msg
 embed = element Html.embed
 
 
+{-| object
+-}
 object : Node msg
 object = element Html.object
 
 
+{-| param
+-}
 param : Node msg
 param = element Html.param
 
 
+{-| ins
+-}
 ins : Node msg
 ins = element Html.ins
 
 
+{-| del
+-}
 del : Node msg
 del = element Html.del
 
 
+{-| small
+-}
 small : Node msg
 small = element Html.small
 
 
+{-| cite
+-}
 cite : Node msg
 cite = element Html.cite
 
 
+{-| dfn
+-}
 dfn : Node msg
 dfn = element Html.dfn
 
 
+{-| abbr
+-}
 abbr : Node msg
 abbr = element Html.abbr
 
 
+{-| time
+-}
 time : Node msg
 time = element Html.time
 
 
+{-| var
+-}
 var : Node msg
 var = element Html.var
 
 
+{-| samp
+-}
 samp : Node msg
 samp = element Html.samp
 
 
+{-| kbd
+-}
 kbd : Node msg
 kbd = element Html.kbd
 
 
+{-| s
+-}
 s : Node msg
 s = element Html.s
 
 
+{-| q
+-}
 q : Node msg
 q = element Html.q
 
 
+{-| mark
+-}
 mark : Node msg
 mark = element Html.mark
 
 
+{-| ruby
+-}
 ruby : Node msg
 ruby = element Html.ruby
 
 
+{-| rt
+-}
 rt : Node msg
 rt = element Html.rt
 
 
+{-| rp
+-}
 rp : Node msg
 rp = element Html.rp
 
 
+{-| bdi
+-}
 bdi : Node msg
 bdi = element Html.bdi
 
 
+{-| bdo
+-}
 bdo : Node msg
 bdo = element Html.bdo
 
 
+{-| wbr
+-}
 wbr : Node msg
 wbr = element Html.wbr
 
 
+{-| details
+-}
 details : Node msg
 details = element Html.details
 
 
+{-| summary
+-}
 summary : Node msg
 summary = element Html.summary
 
 
+{-| menuitem
+-}
 menuitem : Node msg
 menuitem = element Html.menuitem
 
 
+{-| menu
+-}
 menu : Node msg
 menu = element Html.menu
 
 
-
--- HTML Attributes ----------------------------------------------------------------------------------------------------
-
-
+{-| style
+-}
 style : String -> String -> Node msg -> Node msg
 style cssProperty cssValue = Html.Attributes.style cssProperty cssValue |> fromHtmlAttribute
 
 
+{-| class
+-}
 class : String -> Node msg -> Node msg
 class = Html.Attributes.class >> fromHtmlAttribute
 
 
+{-| classList
+-}
 classList : Array { class : String , enabled : Bool } -> Node msg -> Node msg
 classList = Html.Attributes.classList >> fromHtmlAttribute
 
 
+{-| id
+-}
 id : String -> Node msg -> Node msg
 id = Html.Attributes.id >> fromHtmlAttribute
 
 
+{-| title
+-}
 title : String -> Node msg -> Node msg
 title = Html.Attributes.title >> fromHtmlAttribute
 
 
+{-| hidden
+-}
 hidden : Bool -> Node msg -> Node msg
 hidden = Html.Attributes.hidden >> fromHtmlAttribute
 
 
+{-| type_
+-}
 type_ : String -> Node msg -> Node msg
 type_ = Html.Attributes.type_ >> fromHtmlAttribute
 
 
+{-| value
+-}
 value : String -> Node msg -> Node msg
 value = Html.Attributes.value >> fromHtmlAttribute
 
 
+{-| checked
+-}
 checked : Bool -> Node msg -> Node msg
 checked = Html.Attributes.checked >> fromHtmlAttribute
 
 
+{-| placeholder
+-}
 placeholder : String -> Node msg -> Node msg
 placeholder = Html.Attributes.placeholder >> fromHtmlAttribute
 
 
+{-| selected
+-}
 selected : Bool -> Node msg -> Node msg
 selected = Html.Attributes.selected >> fromHtmlAttribute
 
 
+{-| accept
+-}
 accept : String -> Node msg -> Node msg
 accept = Html.Attributes.accept >> fromHtmlAttribute
 
 
+{-| acceptCharset
+-}
 acceptCharset : String -> Node msg -> Node msg
 acceptCharset = Html.Attributes.acceptCharset >> fromHtmlAttribute
 
 
+{-| action
+-}
 action : String -> Node msg -> Node msg
 action = Html.Attributes.action >> fromHtmlAttribute
 
 
+{-| autocomplete
+-}
 autocomplete : Bool -> Node msg -> Node msg
 autocomplete = Html.Attributes.autocomplete >> fromHtmlAttribute
 
 
+{-| autofocus
+-}
 autofocus : Bool -> Node msg -> Node msg
 autofocus = Html.Attributes.autofocus >> fromHtmlAttribute
 
 
+{-| disabled
+-}
 disabled : Bool -> Node msg -> Node msg
 disabled = Html.Attributes.disabled >> fromHtmlAttribute
 
 
+{-| enctype
+-}
 enctype : String -> Node msg -> Node msg
 enctype = Html.Attributes.enctype >> fromHtmlAttribute
 
 
+{-| list
+-}
 list : String -> Node msg -> Node msg
 list = Html.Attributes.list >> fromHtmlAttribute
 
 
+{-| minlength
+-}
 minlength : Int -> Node msg -> Node msg
 minlength = Html.Attributes.minlength >> fromHtmlAttribute
 
 
+{-| maxlength
+-}
 maxlength : Int -> Node msg -> Node msg
 maxlength = Html.Attributes.maxlength >> fromHtmlAttribute
 
 
+{-| method
+-}
 method : String -> Node msg -> Node msg
 method = Html.Attributes.method >> fromHtmlAttribute
 
 
+{-| multiple
+-}
 multiple : Bool -> Node msg -> Node msg
 multiple = Html.Attributes.multiple >> fromHtmlAttribute
 
 
+{-| name
+-}
 name : String -> Node msg -> Node msg
 name = Html.Attributes.name >> fromHtmlAttribute
 
 
+{-| novalidate
+-}
 novalidate : Bool -> Node msg -> Node msg
 novalidate = Html.Attributes.novalidate >> fromHtmlAttribute
 
 
+{-| pattern
+-}
 pattern : String -> Node msg -> Node msg
 pattern = Html.Attributes.pattern >> fromHtmlAttribute
 
 
+{-| readonly
+-}
 readonly : Bool -> Node msg -> Node msg
 readonly = Html.Attributes.readonly >> fromHtmlAttribute
 
 
+{-| required
+-}
 required : Bool -> Node msg -> Node msg
 required = Html.Attributes.required >> fromHtmlAttribute
 
 
+{-| size
+-}
 size : Int -> Node msg -> Node msg
 size = Html.Attributes.size >> fromHtmlAttribute
 
 
+{-| for
+-}
 for : String -> Node msg -> Node msg
 for = Html.Attributes.for >> fromHtmlAttribute
 
 
+{-| form_
+-}
 form_ : String -> Node msg -> Node msg
 form_ = Html.Attributes.form >> fromHtmlAttribute
 
 
+{-| max
+-}
 max : String -> Node msg -> Node msg
 max = Html.Attributes.max >> fromHtmlAttribute
 
 
+{-| min
+-}
 min : String -> Node msg -> Node msg
 min = Html.Attributes.min >> fromHtmlAttribute
 
 
+{-| step
+-}
 step : String -> Node msg -> Node msg
 step = Html.Attributes.step >> fromHtmlAttribute
 
 
+{-| cols
+-}
 cols : Int -> Node msg -> Node msg
 cols = Html.Attributes.cols >> fromHtmlAttribute
 
 
+{-| rows
+-}
 rows : Int -> Node msg -> Node msg
 rows = Html.Attributes.rows >> fromHtmlAttribute
 
 
+{-| wrap
+-}
 wrap : String -> Node msg -> Node msg
 wrap = Html.Attributes.wrap >> fromHtmlAttribute
 
 
+{-| href
+-}
 href : String -> Node msg -> Node msg
 href = Html.Attributes.href >> fromHtmlAttribute
 
 
+{-| target
+-}
 target : String -> Node msg -> Node msg
 target = Html.Attributes.target >> fromHtmlAttribute
 
 
+{-| download
+-}
 download : String -> Node msg -> Node msg
 download = Html.Attributes.download >> fromHtmlAttribute
 
 
+{-| hreflang
+-}
 hreflang : String -> Node msg -> Node msg
 hreflang = Html.Attributes.hreflang >> fromHtmlAttribute
 
 
+{-| media
+-}
 media : String -> Node msg -> Node msg
 media = Html.Attributes.media >> fromHtmlAttribute
 
 
+{-| ping
+-}
 ping : String -> Node msg -> Node msg
 ping = Html.Attributes.ping >> fromHtmlAttribute
 
 
+{-| rel
+-}
 rel : String -> Node msg -> Node msg
 rel = Html.Attributes.rel >> fromHtmlAttribute
 
 
+{-| ismap
+-}
 ismap : Bool -> Node msg -> Node msg
 ismap = Html.Attributes.ismap >> fromHtmlAttribute
 
 
+{-| usemap
+-}
 usemap : String -> Node msg -> Node msg
 usemap = Html.Attributes.usemap >> fromHtmlAttribute
 
 
+{-| shape
+-}
 shape : String -> Node msg -> Node msg
 shape = Html.Attributes.shape >> fromHtmlAttribute
 
 
+{-| coords
+-}
 coords : String -> Node msg -> Node msg
 coords = Html.Attributes.coords >> fromHtmlAttribute
 
 
+{-| src
+-}
 src : String -> Node msg -> Node msg
 src = Html.Attributes.src >> fromHtmlAttribute
 
 
+{-| height
+-}
 height : Int -> Node msg -> Node msg
 height = Html.Attributes.height >> fromHtmlAttribute
 
 
+{-| width
+-}
 width : Int -> Node msg -> Node msg
 width = Html.Attributes.width >> fromHtmlAttribute
 
 
+{-| alt
+-}
 alt : String -> Node msg -> Node msg
 alt = Html.Attributes.alt >> fromHtmlAttribute
 
 
+{-| autoplay
+-}
 autoplay : Bool -> Node msg -> Node msg
 autoplay = Html.Attributes.autoplay >> fromHtmlAttribute
 
 
+{-| controls
+-}
 controls : Bool -> Node msg -> Node msg
 controls = Html.Attributes.controls >> fromHtmlAttribute
 
 
+{-| loop
+-}
 loop : Bool -> Node msg -> Node msg
 loop = Html.Attributes.loop >> fromHtmlAttribute
 
 
+{-| preload
+-}
 preload : String -> Node msg -> Node msg
 preload = Html.Attributes.preload >> fromHtmlAttribute
 
 
+{-| poster
+-}
 poster : String -> Node msg -> Node msg
 poster = Html.Attributes.poster >> fromHtmlAttribute
 
 
+{-| default
+-}
 default : Bool -> Node msg -> Node msg
 default = Html.Attributes.default >> fromHtmlAttribute
 
 
+{-| kind
+-}
 kind : String -> Node msg -> Node msg
 kind = Html.Attributes.kind >> fromHtmlAttribute
 
 
+{-| srclang
+-}
 srclang : String -> Node msg -> Node msg
 srclang = Html.Attributes.srclang >> fromHtmlAttribute
 
 
+{-| sandbox
+-}
 sandbox : String -> Node msg -> Node msg
 sandbox = Html.Attributes.sandbox >> fromHtmlAttribute
 
 
+{-| srcdoc
+-}
 srcdoc : String -> Node msg -> Node msg
 srcdoc = Html.Attributes.srcdoc >> fromHtmlAttribute
 
 
+{-| reversed
+-}
 reversed : Bool -> Node msg -> Node msg
 reversed = Html.Attributes.reversed >> fromHtmlAttribute
 
 
+{-| start
+-}
 start : Int -> Node msg -> Node msg
 start = Html.Attributes.start >> fromHtmlAttribute
 
 
+{-| align
+-}
 align : String -> Node msg -> Node msg
 align = Html.Attributes.align >> fromHtmlAttribute
 
 
+{-| colspan
+-}
 colspan : Int -> Node msg -> Node msg
 colspan = Html.Attributes.colspan >> fromHtmlAttribute
 
 
+{-| rowspan
+-}
 rowspan : Int -> Node msg -> Node msg
 rowspan = Html.Attributes.rowspan >> fromHtmlAttribute
 
 
+{-| headers
+-}
 headers : String -> Node msg -> Node msg
 headers = Html.Attributes.headers >> fromHtmlAttribute
 
 
+{-| scope
+-}
 scope : String -> Node msg -> Node msg
 scope = Html.Attributes.scope >> fromHtmlAttribute
 
 
+{-| accesskey
+-}
 accesskey : Char -> Node msg -> Node msg
 accesskey = Html.Attributes.accesskey >> fromHtmlAttribute
 
 
+{-| contenteditable
+-}
 contenteditable : Bool -> Node msg -> Node msg
 contenteditable = Html.Attributes.contenteditable >> fromHtmlAttribute
 
 
+{-| contextmenu
+-}
 contextmenu : String -> Node msg -> Node msg
 contextmenu = Html.Attributes.contextmenu >> fromHtmlAttribute
 
 
+{-| dir
+-}
 dir : String -> Node msg -> Node msg
 dir = Html.Attributes.dir >> fromHtmlAttribute
 
 
+{-| draggable
+-}
 draggable : String -> Node msg -> Node msg
 draggable = Html.Attributes.draggable >> fromHtmlAttribute
 
 
+{-| dropzone
+-}
 dropzone : String -> Node msg -> Node msg
 dropzone = Html.Attributes.dropzone >> fromHtmlAttribute
 
 
+{-| itemprop
+-}
 itemprop : String -> Node msg -> Node msg
 itemprop = Html.Attributes.itemprop >> fromHtmlAttribute
 
 
+{-| lang
+-}
 lang : String -> Node msg -> Node msg
 lang = Html.Attributes.lang >> fromHtmlAttribute
 
 
+{-| spellcheck
+-}
 spellcheck : Bool -> Node msg -> Node msg
 spellcheck = Html.Attributes.spellcheck >> fromHtmlAttribute
 
 
+{-| tabindex
+-}
 tabindex : Int -> Node msg -> Node msg
 tabindex = Html.Attributes.tabindex >> fromHtmlAttribute
 
 
+{-| cite_
+-}
 cite_ : String -> Node msg -> Node msg
 cite_ = Html.Attributes.cite >> fromHtmlAttribute
 
 
+{-| datetime
+-}
 datetime : String -> Node msg -> Node msg
 datetime = Html.Attributes.datetime >> fromHtmlAttribute
 
 
+{-| pubdate
+-}
 pubdate : String -> Node msg -> Node msg
 pubdate = Html.Attributes.pubdate >> fromHtmlAttribute
 
 
+{-| manifest
+-}
 manifest : String -> Node msg -> Node msg
 manifest = Html.Attributes.manifest >> fromHtmlAttribute
 
 
-
--- HTML Events --------------------------------------------------------------------------------------------------------
-
-
--- Mouse
-
-
+{-| onClick
+-}
 onClick : msg -> Node msg -> Node msg
 onClick = Html.Events.onClick >> fromHtmlAttribute
 
 
+{-| onDoubleClick
+-}
 onDoubleClick : msg -> Node msg -> Node msg
 onDoubleClick = Html.Events.onDoubleClick >> fromHtmlAttribute
 
 
+{-| onMouseDown
+-}
 onMouseDown : msg -> Node msg -> Node msg
 onMouseDown = Html.Events.onMouseDown >> fromHtmlAttribute
 
 
+{-| onMouseUp
+-}
 onMouseUp : msg -> Node msg -> Node msg
 onMouseUp = Html.Events.onMouseUp >> fromHtmlAttribute
 
 
+{-| onMouseEnter
+-}
 onMouseEnter : msg -> Node msg -> Node msg
 onMouseEnter = Html.Events.onMouseEnter >> fromHtmlAttribute
 
 
+{-| onMouseLeave
+-}
 onMouseLeave : msg -> Node msg -> Node msg
 onMouseLeave = Html.Events.onMouseLeave >> fromHtmlAttribute
 
 
+{-| onMouseOver
+-}
 onMouseOver : msg -> Node msg -> Node msg
 onMouseOver = Html.Events.onMouseOver >> fromHtmlAttribute
 
 
+{-| onMouseOut
+-}
 onMouseOut : msg -> Node msg -> Node msg
 onMouseOut = Html.Events.onMouseOut >> fromHtmlAttribute
 
 
-
--- Forms
-
-
+{-| onInput
+-}
 onInput : ( String -> msg ) -> Node msg -> Node msg
 onInput = Html.Events.onInput >> fromHtmlAttribute
 
 
+{-| onCheck
+-}
 onCheck : ( Bool -> msg ) -> Node msg -> Node msg
 onCheck = Html.Events.onCheck >> fromHtmlAttribute
 
 
+{-| onSubmit
+-}
 onSubmit : msg -> Node msg -> Node msg
 onSubmit = Html.Events.onSubmit >> fromHtmlAttribute
 
 
-
--- Focus
-
-
+{-| onBlur
+-}
 onBlur : msg -> Node msg -> Node msg
 onBlur = Html.Events.onBlur >> fromHtmlAttribute
 
 
+{-| onFocus
+-}
 onFocus : msg -> Node msg -> Node msg
 onFocus = Html.Events.onFocus >> fromHtmlAttribute
 

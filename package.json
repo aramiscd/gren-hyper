@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "gren-lang": "^0.6.3"
+    "gren-lang": "^0.6.3",
+    "gren-packages": "^6.0.0"
   }
 }
