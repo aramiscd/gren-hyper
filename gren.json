@@ -3,7 +3,7 @@
 , "name" : "aramiscd/gren-hyper"
 , "summary" : "modifiable html elements"
 , "license" : "BSD-3-Clause"
-, "version" : "1.6.1"
+, "version" : "1.6.2"
 , "exposed-modules" :
     [ "Hyper"
     ]
