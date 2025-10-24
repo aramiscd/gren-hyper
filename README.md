@@ -1,6 +1,6 @@
 # gren-hyper
 
-Here is a regular `div`:
+Here is a regular `div` based on Gren's `Html`, `Html.Attributes` and `Html.Events` modules:
 
     Html.div
         [ Attributes.style "background-color" "yellow"
@@ -11,7 +11,7 @@ Here is a regular `div`:
         , Html.p [] [ Html.text "Noch ein Absatz." ]
         ]
 
-Here is the same `div` written with [aramiscd/gren-hyper](https://github.com/aramiscd/gren-hyper)
+Here is the same `div` based on `Hyper`:
 
     Hyper.div
         |> Hyper.style "background" "yellow"
@@ -22,3 +22,8 @@ Here is the same `div` written with [aramiscd/gren-hyper](https://github.com/ara
             , Hyper.p |> Hyper.children [ Hyper.text "Noch ein Absatz." ]
             ]
         |> Hyper.compile
+
+What is the difference?
+
+With `Hyper`, you can accumulate attributes and child elements using the pipe operator.
+This should make it easier to create reusable HTML elements.
